@@ -41,7 +41,7 @@ if (isset($_POST['id_product']))
     if(mysqli_num_rows($result) == 0 && $_POST['count'] != 0){
         mysqli_query($connection, "INSERT INTO `shopping_cart`  (`id_product`, `name`, `description`, `price`, `count`) VALUES (" . $_POST['id_product'] . ", '" . $_POST['name'] . "', '" . $_POST['description'] . "', '" . $_POST['price'] . "', '" . $_POST['count'] . "')") or die(mysqli_error($connection));
     }else if(mysqli_num_rows($result) != 0 && $_POST['count'] != 0){
-        mysqli_query($connection, "UPDATE `shopping_cart` SET `count` = `count` + 1 WHERE `id_product` =  " . $_POST['id_product']) or die(mysqli_error($connection));
+        mysqli_query($connection, "UPDATE `shopping_cart` SET `count` = '".$_POST['count']."' WHERE `id_product` =  " . $_POST['id_product']) or die(mysqli_error($connection));
     }else if(mysqli_num_rows($result) != 0 && $_POST['count'] == 0){
         mysqli_query($connection, "DELETE FROM `shopping_cart` WHERE `id_product` = " . $_POST['id_product']);
     }
@@ -59,10 +59,10 @@ if (isset($_POST['id_product']))
         <p><?php echo $product['name']; ?> </p>
    </td>
    <td class="text-center">
-        <input type="text" onchange="changeCount(<?php echo $product['id_product']; ?>)" class="form-control edit-count" name="count" value="<?php echo $product['count']; ?>">
+        <input type="text" onchange="changeCount(<?php echo $product['id_product']; ?>)" class="form-control edit-count-<?php echo $product['id_product']; ?>" name="count" value="<?php echo $product['count']; ?>">
    </td>
    <td class="text-center">
-      <p><?php echo $product['price']; ?>$</p>
+      <p class="price"><?php echo $product['price']; ?>$</p>
       <p><?php echo $product['description']; ?></p>
    </td>
    <td class="text-center" style="width: 20%;">
