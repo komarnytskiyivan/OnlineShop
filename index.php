@@ -131,6 +131,7 @@
                               <tr>
                                  <th class="text-center"><span>Name</span></th>
                                  <th class="text-center"><span>Pricing</span></th>
+                                 <th class="text-center"><span>Rate product</span></th>
                                  <th class="text-center"><span>Buy</span></th>
                               </tr>
                            </thead>
@@ -146,6 +147,21 @@
                                  <td class="text-center">
                                     <p><?php echo $product['price']; ?>$</p> 
                                     <p><?php echo $product['description']; ?></p> 
+                                 </td>
+                                 <td class="text-center">
+                                 <div class="rate">
+                                 <label for="rate">Rate this:</label>
+                                 <select class="select-rate select-rate-<?php echo $product['id']; ?>" id="rate" onchange="changeRate(<?php echo $product['id']; ?>)">
+                                    <option value=""></option>
+                                    <option value="0">0</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                 </select>
+                                 <p class="current-rate-<?php echo $product['id']; ?>">Current:<strong><?php echo $product['rate']; ?></strong><p>
+                                </div>
                                  </td>
                                  <td class="text-center" style="width: 20%;">
                                     <button onclick="addProduct(

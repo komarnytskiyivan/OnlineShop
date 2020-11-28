@@ -1,7 +1,24 @@
 let cartButton = document.querySelector('.cart-button');
 let products = document.querySelectorAll('.product-item');
 cartButton.textContent = `My cart(${products.length})`;
-
+function changeRate(id_product){
+    let rate = document.querySelector(`.select-rate-${id_product}`).value;
+    let selectRates = document.querySelectorAll('.select-rate');
+    selectRates.forEach(rate => rate.setAttribute("disabled", "disabled"));
+    let bodyFormData = new FormData();
+    bodyFormData.append('id_product', id_product);
+    bodyFormData.append('rate', rate);
+    axios({
+        method: 'post',
+        url: './includes/rating.php',
+        data: bodyFormData,
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    }).then(response => {
+        document.querySelector(`.current-rate-${id_product}`).innerHTML = `Current:${response.data}`;
+    })
+}
 function submitProducts() {
     let cartPayButton = document.querySelector('.cart-pay');
     if (document.querySelector('.select-delivery').value == "") {

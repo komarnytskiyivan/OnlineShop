@@ -1,9 +1,6 @@
 <?php
 include "./config.php";
-if (isset($_POST['prev_balance']))
-{
     mysqli_query($connection, "INSERT INTO `pays`  (`prev_balance`, `sum`, `next_balance`) VALUES (" . $_POST['prev_balance'] . ", " . $_POST['sum'] . ", " . $_POST['next_balance'].")") or die(mysqli_error($connection));
-}
    $pays = mysqli_query($connection,"SELECT * FROM `pays` ORDER BY `id` DESC LIMIT 1");
    while($pay = mysqli_fetch_assoc($pays)){
    ?>
