@@ -63,6 +63,7 @@
             </button>
          </div>
          <div>
+         <div class="modal-body">
             <div class="container bootstrap snippets bootdey">
                 <div class="row">
                     <div class="col-lg-12">
@@ -85,7 +86,7 @@
                                                 <?php
                                                 while($product = mysqli_fetch_assoc($products)){
                                                 ?>
-                                                <tr>
+                                                <tr class="product-item">
                                                 <td>
                                                         <p><?php echo $product['name']; ?> </p>
                                                 </td>
@@ -98,12 +99,12 @@
                                                     <p><?php echo $product['description']; ?></p>
                                                 </td>
                                                 <td class="text-center" style="width: 20%;">
-                                                    <a data-toggle="modal" data-target="#ModalConfirm" class="table-link danger delete-item ">
                                                     <span class="fa-stack ">
                                                     <i class="fa fa-square fa-stack-2x "></i>
-                                                    <i id="<?php echo $product['id'] ?>" class="fa fa-trash-o fa-stack-1x fa-inverse del btn-delete-submit"></i>
+                                                    <i onclick="deleteProduct(
+                                                            <?php echo $product['id']; ?>
+                                                            )" class="fa fa-trash-o fa-stack-1x fa-inverse del btn-delete-submit"></i>
                                                     </span>
-                                                    </a>
                                                 </td>
                                                 </tr>
                                                 <?php
@@ -118,8 +119,17 @@
                     </div>
                 </div>
          </div>
+            <div class="form-group">
+                <label for="delivery">Please select delivery:</label>
+                <select class="form-control select-delivery" id="delivery">
+                <option value=""></option>
+                <option value="pickup">Pick Up(0 USD)</option>
+                <option value="ups">UPS(5)</option>
+                </select>
+            </div>
+         </div>
          <div class="modal-footer">
-            <a href="" class="btn btn-primary btn-save-changes btn-delete-solo" data-dismiss="modal">Apply</a>
+            <button type="submit" class="btn btn-primary cart-pay"  onclick="submitProducts()" data-dismiss="modal">Please select delivery</button>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
          </div>
       </div>

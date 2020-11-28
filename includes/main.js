@@ -9,13 +9,25 @@
 // let arrChecked = [];
 // let modalText = document.querySelector('.modal-text-confirm')
 // let modalTitle = document.querySelector('.modal-title-confirm')
+let cartPayButton = document.querySelector('.cart-pay');
+let cartButton = document.querySelector('.cart-button');
 let cartContent = document.querySelector('.modal-cart-content');
+let products = document.querySelectorAll('.product-item');
+console.log(products.length);
+cartButton.textContent = `My cart(${products.length})`;
+function submitProducts(){
+    if(document.querySelector('.select-delivery').value == ""){
+        cartPayButton.removeAttribute("data-dismiss");
+    alert("Please select delivery!!!");
+    }else{
+        cartPayButton.setAttribute("data-dismiss", "modal");
+    }
+}
 function changeCount(id_product){
     let bodyFormData = new FormData();
             let edit_count = document.querySelector('.edit-count').value;
-            bodyFormData.append('addid', id_product);
+            bodyFormData.append('id_product', id_product);
             bodyFormData.append('count', edit_count);
-            console.log(edit_count);
             axios({
                 method: 'post',
                 url: './includes/get_post.php',
@@ -25,11 +37,34 @@ function changeCount(id_product){
                 }
             }).then(response => {
                 cartContent.innerHTML = response.data;
+                let products = document.querySelectorAll('.product-item');
+                console.log(products.length);
+                cartButton.textContent = `My cart(${products.length})`
+            })
+}
+function deleteProduct(id_product){
+    console.log(id_product);
+    let bodyFormData = new FormData();
+            bodyFormData.append('id_product', id_product);
+            bodyFormData.append('count', 0);
+            axios({
+                method: 'post',
+                url: './includes/get_post.php',
+                data: bodyFormData,
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            }).then(response => {
+                cartContent.innerHTML = response.data;
+                let products = document.querySelectorAll('.product-item');
+                console.log(products.length);
+                cartButton.textContent = `My cart(${products.length})`
             })
 }
 function addProduct(id_product,name_product,description_product,price_product){
+    console.log(id_product);
     let bodyFormData = new FormData();
-            bodyFormData.append('addid', id_product);
+            bodyFormData.append('id_product', id_product);
             bodyFormData.append('name', name_product);
             bodyFormData.append('description', description_product);
             bodyFormData.append('price', price_product);
@@ -43,6 +78,9 @@ function addProduct(id_product,name_product,description_product,price_product){
                 }
             }).then(response => {
                 cartContent.innerHTML = response.data;
+                let products = document.querySelectorAll('.product-item');
+                console.log(products.length);
+                cartButton.textContent = `My cart(${products.length})`
             })
 }
 // document.body.addEventListener('click', function(event) {

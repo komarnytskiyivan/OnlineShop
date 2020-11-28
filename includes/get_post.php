@@ -32,46 +32,46 @@ if (isset($_GET['setNotActive']))
     }
     unset($_GET['setNotActive']);
 }
-if (isset($_POST['addid']))
+if (isset($_POST['id_product']))
 {
-    $query = "SELECT * FROM `shopping_cart` WHERE `id` = ".$_POST['addid'];
+    $query = "SELECT * FROM `shopping_cart` WHERE `id_product` = ".$_POST['id_product'];
     $result = mysqli_query($connection, $query);
     $file = 'query.txt';
     file_put_contents($file, mysqli_num_rows($result));
     if(mysqli_num_rows($result) == 0 && $_POST['count'] != 0){
-        mysqli_query($connection, "INSERT INTO `shopping_cart`  (`name`, `description`, `price`, `count`) VALUES ('" . $_POST['name'] . "', '" . $_POST['description'] . "', '" . $_POST['price'] . "', '" . $_POST['count'] . "')") or die(mysqli_error($connection));
+        mysqli_query($connection, "INSERT INTO `shopping_cart`  (`id_product`, `name`, `description`, `price`, `count`) VALUES (" . $_POST['id_product'] . ", '" . $_POST['name'] . "', '" . $_POST['description'] . "', '" . $_POST['price'] . "', '" . $_POST['count'] . "')") or die(mysqli_error($connection));
     }else if(mysqli_num_rows($result) != 0 && $_POST['count'] != 0){
-        mysqli_query($connection, "UPDATE `shopping_cart` SET `count` = '" . $_POST['count'] . "' WHERE `id` =  " . $_POST['addid']) or die(mysqli_error($connection));
+        mysqli_query($connection, "UPDATE `shopping_cart` SET `count` = `count` + 1 WHERE `id_product` =  " . $_POST['id_product']) or die(mysqli_error($connection));
     }else if(mysqli_num_rows($result) != 0 && $_POST['count'] == 0){
-        mysqli_query($connection, "DELETE FROM `shopping_cart` WHERE `id` = " . $_POST['addid']);
+        mysqli_query($connection, "DELETE FROM `shopping_cart` WHERE `id_product` = " . $_POST['id_product']);
     }
     unset($_POST['addid']);
 }
 ?>
 <?php 
-   $products = mysqli_query($connection,"SELECT * FROM `shopping_cart` WHERE `count` >= 1 ORDER BY `id` ");
+   $products = mysqli_query($connection,"SELECT * FROM `shopping_cart` ORDER BY `id_product` ");
    ?>
 <?php
    while($product = mysqli_fetch_assoc($products)){
    ?>
-<tr>
+<tr class="product-item">
    <td>
         <p><?php echo $product['name']; ?> </p>
    </td>
    <td class="text-center">
-        <input type="text" onchange="changeCount(<?php echo $product['id']; ?>)" class="form-control edit-count" name="count" value="<?php echo $product['count']; ?>">
+        <input type="text" onchange="changeCount(<?php echo $product['id_product']; ?>)" class="form-control edit-count" name="count" value="<?php echo $product['count']; ?>">
    </td>
    <td class="text-center">
-      <p><?php echo $product['price']; ?></p>
+      <p><?php echo $product['price']; ?>$</p>
       <p><?php echo $product['description']; ?></p>
    </td>
    <td class="text-center" style="width: 20%;">
-      <a data-toggle="modal" data-target="#ModalConfirm" class="table-link danger delete-item ">
       <span class="fa-stack ">
       <i class="fa fa-square fa-stack-2x "></i>
-      <i id="<?php echo $product['id'] ?>" class="fa fa-trash-o fa-stack-1x fa-inverse del btn-delete-submit"></i>
+      <i onclick="deleteProduct(
+            <?php echo $product['id_product']; ?>
+            )" class="fa fa-trash-o fa-stack-1x fa-inverse del btn-delete-submit"></i>
       </span>
-      </a>
    </td>
 </tr>
 <?php

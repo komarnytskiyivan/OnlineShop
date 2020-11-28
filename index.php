@@ -17,7 +17,7 @@
             <div class="col-lg-12">
                <div class="main-box no-header clearfix">
                   <div class="main-box-body clearfix">
-                    <button data-toggle="modal" data-target="#ModalCart" type="button" class="btn btn-primary">My cart</button>
+                    <button data-toggle="modal" data-target="#ModalCart" type="button" class="btn btn-primary cart-button">My cart</button>
                   </div>
                </div>
             </div>
@@ -56,7 +56,7 @@
                                        `<?php echo $product['name']; ?>`,
                                        `<?php echo $product['description']; ?>`, 
                                        <?php echo $product['price']; ?>
-                                       )" type="button" class="btn btn-primary">Add to cart
+                                       )" type="button" class="btn btn-primary add-to-cart">Add to cart
                                     </button>
                                  </td>
                               </tr>
