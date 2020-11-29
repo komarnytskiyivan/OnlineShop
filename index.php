@@ -25,6 +25,7 @@
                     <table class="table">
                         <thead>
                             <tr>
+                                <th class="text-center"><span>Image</span></th>
                                 <th class="text-center"><span>Name</span></th>
                                 <th class="text-center"><span>Count</span></th>
                                 <th class="text-center"><span>Pricing</span></th>
@@ -33,19 +34,21 @@
                         </thead>
                         <tbody class="modal-cart-products">
                             <?php 
-                                $products = mysqli_query($connection,"SELECT * FROM `shopping_cart` WHERE `count` >= 1 ORDER BY `id` ");
+                                $products = mysqli_query($connection,"SELECT * FROM `shopping_cart` ORDER BY `id` ");
                                 while($product = mysqli_fetch_assoc($products)){
                                 ?>
                             <tr class="product-item">
+                                <td class="text-center">
+                                    <img style="width:100px; height:100px;" src="<?php echo $product['image']; ?>" alt="<?php echo $product['name']; ?>"/>
+                                </td>
                                 <td>
                                     <p><?php echo $product['name']; ?> </p>
                                 </td>
                                 <td class="text-center">
-                                    <!-- <p><?php echo $product['count']; ?></p> -->
                                     <input type="text" onchange="changeCount(<?php echo $product['id_product']; ?>)" class="form-control edit-count edit-count-<?php echo $product['id_product']; ?>" name="count" value="<?php echo $product['count']; ?>">
                                 </td>
                                 <td class="text-center">
-                                    <p class="price" ><?php echo $product['price']; ?>$</p>
+                                    <p><strong  class="price" ><?php echo $product['price']; ?></strong>$</p>
                                     <p><?php echo $product['description']; ?></p>
                                 </td>
                                 <td class="text-center" style="width: 20%;">
@@ -62,17 +65,7 @@
                             ?>
                         </tbody>
                     </table>
-                </div>
-                <div class="form-group">
-                    <label for="delivery">Please select delivery:</label>
-                    <select class="select-delivery" id="delivery">
-                        <option value=""></option>
-                        <option value="0">Pick Up(0 USD)</option>
-                        <option value="5">UPS(5)</option>
-                    </select>
-                </div>
-            </div>
-            <table class="table">
+                    <table class="table">
                 <thead>
                     <tr>
                         <th class="text-center"><span>Previous balance</span></th>
@@ -101,6 +94,17 @@
                         ?>
                 </tbody>
             </table>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                    <label for="delivery">Please select delivery:</label>
+                    <select class="select-delivery" id="delivery">
+                        <option value=""></option>
+                        <option value="0">Pick Up(0 USD)</option>
+                        <option value="5">UPS(5)</option>
+                    </select>
+            </div>
             <div class="modal-footer">
                 <button type="submit" class="btn btn-primary cart-pay"  onclick="submitProducts()" data-dismiss="modal">Pay</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -129,6 +133,7 @@
                         <table class="table">
                            <thead>
                               <tr>
+                                 <th class="text-center"><span>Image</span></th>
                                  <th class="text-center"><span>Name</span></th>
                                  <th class="text-center"><span>Pricing</span></th>
                                  <th class="text-center"><span>Rate product</span></th>
@@ -141,6 +146,9 @@
                                  while($product = mysqli_fetch_assoc($products)){
                                  ?>
                               <tr>
+                                <td class="text-center">
+                                    <img style="width:100px; height:100px;" src="<?php echo $product['image']; ?>" alt="<?php echo $product['name']; ?>"/>
+                                </td>
                                  <td class="text-center" style="width: 20%;">
                                     <p><?php echo $product['name']; ?></p> 
                                  </td>
@@ -167,8 +175,9 @@
                                     <button onclick="addProduct(
                                        <?php echo $product['id']; ?>,
                                        `<?php echo $product['name']; ?>`,
-                                       `<?php echo $product['description']; ?>`, 
-                                       <?php echo $product['price']; ?>
+                                       `<?php echo $product['description']; ?>`,
+                                       <?php echo $product['price']; ?>,
+                                       `<?php echo $product['image']; ?>`
                                        )" type="button" class="btn btn-primary add-to-cart">Add to cart
                                     </button>
                                  </td>

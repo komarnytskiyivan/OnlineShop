@@ -9,7 +9,7 @@ if (isset($_POST['id_product']))
     }else if(mysqli_num_rows($result) != 0 && $_POST['count'] != 0){
         mysqli_query($connection, "UPDATE `shopping_cart` SET `count` = '".$_POST['count']."' WHERE `id_product` =  " . $_POST['id_product']) or die(mysqli_error($connection));
     }else if(mysqli_num_rows($result) == 0 && $_POST['count'] == 'increment'){
-        mysqli_query($connection, "INSERT INTO `shopping_cart`  (`id_product`, `name`, `description`, `price`, `count`) VALUES (" . $_POST['id_product'] . ", '" . $_POST['name'] . "', '" . $_POST['description'] . "', '" . $_POST['price'] . "', 1)") or die(mysqli_error($connection));
+        mysqli_query($connection, "INSERT INTO `shopping_cart`  (`id_product`, `name`, `description`, `price`, `count`, `image`) VALUES (" . $_POST['id_product'] . ", '" . $_POST['name'] . "', '" . $_POST['description'] . "', '" . $_POST['price'] . "', 1, '".$_POST['image']."')") or die(mysqli_error($connection));
     }else if(mysqli_num_rows($result) != 0 && $_POST['count'] == 0){
         mysqli_query($connection, "DELETE FROM `shopping_cart` WHERE `id_product` = " . $_POST['id_product']);
     }
@@ -18,6 +18,9 @@ if (isset($_POST['id_product']))
    while($product = mysqli_fetch_assoc($products)){
    ?>
 <tr class="product-item">
+    <td class="text-center">
+        <img style="width:100px; height:100px;" src="<?php echo $product['image']; ?>" alt="<?php echo $product['name']; ?>"/>
+    </td>
    <td>
         <p><?php echo $product['name']; ?> </p>
    </td>
@@ -25,7 +28,7 @@ if (isset($_POST['id_product']))
         <input type="text" onchange="changeCount(<?php echo $product['id_product']; ?>)" class="form-control edit-count edit-count-<?php echo $product['id_product']; ?>" name="count" value="<?php echo $product['count']; ?>">
    </td>
    <td class="text-center">
-      <p class="price"><?php echo $product['price']; ?>$</p>
+      <p><strong  class="price" ><?php echo $product['price']; ?></strong>$</p>
       <p><?php echo $product['description']; ?></p>
    </td>
    <td class="text-center" style="width: 20%;">
@@ -38,4 +41,4 @@ if (isset($_POST['id_product']))
    </td>
 </tr>
 <?php
-}
+   }

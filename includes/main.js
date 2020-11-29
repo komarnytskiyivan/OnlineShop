@@ -7,7 +7,7 @@ function changeRate(id_product){
     selectRates.forEach(rate => rate.setAttribute("disabled", "disabled"));
     let bodyFormData = new FormData();
     bodyFormData.append('id_product', id_product);
-    bodyFormData.append('rate', rate);
+    bodyFormData.append('new_rate', rate);
     axios({
         method: 'post',
         url: './includes/rating.php',
@@ -25,16 +25,22 @@ function submitProducts() {
         cartPayButton.removeAttribute("data-dismiss");
         alert("Please select delivery!!!");
     } else {
-        let cartPays = document.querySelector('.modal-cart-pays');
+        let cartPays = document.querySelector('.modal-body');
         cartPayButton.setAttribute("data-dismiss", "modal");
         let prev_balance = +document.querySelector('.balance').textContent;
         let counts = document.querySelectorAll('.edit-count');
         let prices = document.querySelectorAll('.price');
         let sum = +document.querySelector('.select-delivery').value;
+        console.log(sum);
         for (let i = 0; i < counts.length; i++) {
+            console.log(counts[i].value)
+            console.log(prices[i].textContent)
             sum += counts[i].value * prices[i].textContent;
+            console.log(sum)
         }
         let next_balance = prev_balance - sum;
+        console.log(prev_balance);
+        console.log(next_balance);
         let bodyFormData = new FormData();
         bodyFormData.append('prev_balance', prev_balance);
         bodyFormData.append('sum', sum);
@@ -48,7 +54,8 @@ function submitProducts() {
             }
         }).then(response => {
             cartPays.innerHTML = response.data;
-            document.querySelector('.balance').textContent = next_balance;
+            let products = document.querySelectorAll('.product-item');
+            cartButton.textContent = `My cart(${products.length})`
         })
     }
 }
@@ -68,12 +75,13 @@ function deleteProduct(id_product) {
     changeCart(bodyFormData);
 }
 
-function addProduct(id_product, name_product, description_product, price_product) {
+function addProduct(id_product, name_product, description_product, price_product, image_product) {
     let bodyFormData = new FormData();
     bodyFormData.append('id_product', id_product);
     bodyFormData.append('name', name_product);
     bodyFormData.append('description', description_product);
     bodyFormData.append('price', price_product);
+    bodyFormData.append('image', image_product);
     bodyFormData.append('count', 'increment');
     changeCart(bodyFormData);
 }
