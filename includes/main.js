@@ -2,12 +2,11 @@ let cartButton = document.querySelector('.cart-button');
 let products = document.querySelectorAll('.product-item');
 cartButton.textContent = `My cart(${products.length})`;
 function changeRate(id_product){
-    let rate = document.querySelector(`.select-rate-${id_product}`).value;
-    let selectRates = document.querySelectorAll('.select-rate');
-    selectRates.forEach(rate => rate.setAttribute("disabled", "disabled"));
+    let rate = document.querySelector(`.select-rate-${id_product}`);
+    rate.setAttribute("disabled", "disabled");
     let bodyFormData = new FormData();
     bodyFormData.append('id_product', id_product);
-    bodyFormData.append('new_rate', rate);
+    bodyFormData.append('new_rate', rate.value);
     axios({
         method: 'post',
         url: './includes/rating.php',
@@ -31,16 +30,15 @@ function submitProducts() {
         let counts = document.querySelectorAll('.edit-count');
         let prices = document.querySelectorAll('.price');
         let sum = +document.querySelector('.select-delivery').value;
-        console.log(sum);
+        document.querySelector('.select-delivery').value = '';
         for (let i = 0; i < counts.length; i++) {
-            console.log(counts[i].value)
-            console.log(prices[i].textContent)
             sum += counts[i].value * prices[i].textContent;
-            console.log(sum)
         }
         let next_balance = prev_balance - sum;
-        console.log(prev_balance);
-        console.log(next_balance);
+        if(next_balance < 0){
+            cartPayButton.setAttribute("data-dismiss", "modal");
+            alert("You have not enough money!!!");
+        }else{
         let bodyFormData = new FormData();
         bodyFormData.append('prev_balance', prev_balance);
         bodyFormData.append('sum', sum);
@@ -57,6 +55,7 @@ function submitProducts() {
             let products = document.querySelectorAll('.product-item');
             cartButton.textContent = `My cart(${products.length})`
         })
+        }
     }
 }
 
@@ -83,7 +82,15 @@ function addProduct(id_product, name_product, description_product, price_product
     bodyFormData.append('price', price_product);
     bodyFormData.append('image', image_product);
     bodyFormData.append('count', 'increment');
+    document.querySelector('.btn-add-count').addEventListener('click', (event) => {
+    bodyFormData.append('adding_count', +document.querySelector('.adding_count').value);
     changeCart(bodyFormData);
+    setTimeout(()=>{
+    let old_element = event.target;
+    let new_element = old_element.cloneNode(true);
+    old_element.parentNode.replaceChild(new_element, old_element);
+    }, 1)
+    })
 }
 
 function changeCart(bodyFormData) {

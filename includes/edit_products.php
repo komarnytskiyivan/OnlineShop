@@ -5,11 +5,11 @@ if (isset($_POST['id_product']))
     $query = "SELECT * FROM `shopping_cart` WHERE `id_product` = ".$_POST['id_product'];
     $result = mysqli_query($connection, $query);
     if(mysqli_num_rows($result) != 0 && $_POST['count'] == 'increment'){
-        mysqli_query($connection, "UPDATE `shopping_cart` SET `count` = `count` + 1 WHERE `id_product` =  " . $_POST['id_product']) or die(mysqli_error($connection));
+        mysqli_query($connection, "UPDATE `shopping_cart` SET `count` = `count` + ".$_POST['adding_count']." WHERE `id_product` =  " . $_POST['id_product']) or die(mysqli_error($connection));
     }else if(mysqli_num_rows($result) != 0 && $_POST['count'] != 0){
         mysqli_query($connection, "UPDATE `shopping_cart` SET `count` = '".$_POST['count']."' WHERE `id_product` =  " . $_POST['id_product']) or die(mysqli_error($connection));
     }else if(mysqli_num_rows($result) == 0 && $_POST['count'] == 'increment'){
-        mysqli_query($connection, "INSERT INTO `shopping_cart`  (`id_product`, `name`, `description`, `price`, `count`, `image`) VALUES (" . $_POST['id_product'] . ", '" . $_POST['name'] . "', '" . $_POST['description'] . "', '" . $_POST['price'] . "', 1, '".$_POST['image']."')") or die(mysqli_error($connection));
+        mysqli_query($connection, "INSERT INTO `shopping_cart`  (`id_product`, `name`, `description`, `price`, `count`, `image`) VALUES (" . $_POST['id_product'] . ", '" . $_POST['name'] . "', '" . $_POST['description'] . "', '" . $_POST['price'] . "', ".$_POST['adding_count'].", '".$_POST['image']."')") or die(mysqli_error($connection));
     }else if(mysqli_num_rows($result) != 0 && $_POST['count'] == 0){
         mysqli_query($connection, "DELETE FROM `shopping_cart` WHERE `id_product` = " . $_POST['id_product']);
     }

@@ -8,4 +8,3 @@ while($current = mysqli_fetch_assoc($current_rate)){
 <strong><?php echo $current['rate'];?></strong>
 <?php
 }
-
